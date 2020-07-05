@@ -32,9 +32,10 @@ func main() {
 		os.Exit(1)
 	}
 
+	fmt.Printf("Configuration loaded: %+v\n", cfg)
+
 	logger := reporter.NewZeroLog()
 	logger.Level(zerolog.DebugLevel)
-
 	ctx := context.Background()
 
 	if cfg.ICMP {
