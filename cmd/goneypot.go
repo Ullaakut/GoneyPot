@@ -6,11 +6,11 @@ import (
 	"os"
 	"os/signal"
 
-	"github.com/rs/zerolog"
-	"github.com/spf13/viper"
 	"github.com/Ullaakut/goneypot/pkg/configuration"
 	"github.com/Ullaakut/goneypot/pkg/listener"
 	"github.com/Ullaakut/goneypot/pkg/reporter"
+	"github.com/rs/zerolog"
+	"github.com/spf13/viper"
 )
 
 func main() {
@@ -47,7 +47,13 @@ func main() {
 	}
 
 	if cfg.TCP != nil {
-		for _, portRange := range cfg.TCP.Ports {
+		portRanges, err := cfg.TCP.PortRanges()
+		if err != nil {
+			fmt.Println("invalid TCP port range:", err)
+			return
+		}
+
+		for _, portRange := range portRanges {
 			// Single port, not a range.
 			if portRange[1] == 0 {
 				if err := listener.New(ctx, portRange[0], logger).ListenTCP(); err != nil {
@@ -68,7 +74,13 @@ func main() {
 	}
 
 	if cfg.UDP != nil {
-		for _, portRange := range cfg.UDP.Ports {
+		portRanges, err := cfg.UDP.PortRanges()
+		if err != nil {
+			fmt.Println("invalid UDP port range:", err)
+			return
+		}
+
+		for _, portRange := range portRanges {
 			// Single port, not a range.
 			if portRange[1] == 0 {
 				if err := listener.New(ctx, portRange[0], logger).ListenUDP(); err != nil {
