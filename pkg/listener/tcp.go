@@ -26,6 +26,8 @@ func (l *Listener) ListenTCP() error {
 		}
 	}()
 
+	fmt.Println("Listening for TCP connections on port", l.port)
+
 	return nil
 }
 

@@ -28,5 +28,7 @@ func (l *Listener) ListenICMP() error {
 		}
 	}()
 
+	fmt.Println("Listening for ICMP requests on host")
+
 	return nil
 }

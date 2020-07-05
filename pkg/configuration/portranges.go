@@ -14,8 +14,6 @@ func NewPortRanges(s []string) (PortRanges, error) {
 	var result PortRanges
 
 	for _, portRange := range s {
-		fmt.Println("Port range found:", s)
-
 		ports := strings.Split(portRange, "-")
 
 		// Case where only one port is specified.
@@ -49,8 +47,6 @@ func NewPortRanges(s []string) (PortRanges, error) {
 			uint16(end),
 		})
 	}
-
-	fmt.Printf("Result: %+v\n", result)
 
 	return result, nil
 }

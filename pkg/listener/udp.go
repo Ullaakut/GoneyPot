@@ -29,5 +29,7 @@ func (l *Listener) ListenUDP() error {
 		}
 	}()
 
+	fmt.Println("Listening for UDP connections on port", l.port)
+
 	return nil
 }
