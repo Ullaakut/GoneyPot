@@ -28,7 +28,7 @@ func (l *Listener) ListenICMP() error {
 		}
 	}()
 
-	l.report.Infof("Listening for ICMP requests on host")
+	l.report.Info("Listening for ICMP requests on host")
 
 	return nil
 }

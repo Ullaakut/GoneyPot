@@ -49,6 +49,10 @@ func (z ZeroLogReporter) Event(source net.Addr, packet []byte, format string, a 
 		Hex("packet", packet).Msg("")
 }
 
+func (z ZeroLogReporter) Info(msg string) {
+	z.log.Info().Msg(msg)
+}
+
 func (z ZeroLogReporter) Infof(format string, a ...interface{}) {
 	z.log.Info().Msgf(format, a)
 }
