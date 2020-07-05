@@ -2,7 +2,6 @@ package listener
 
 import (
 	"bufio"
-	"fmt"
 	"net"
 	"strconv"
 	"strings"
@@ -11,14 +10,15 @@ import (
 func (l *Listener) ListenTCP() error {
 	tcp, err := net.Listen("tcp", ":"+strconv.Itoa(int(l.port)))
 	if err != nil {
-		return fmt.Errorf("unable to TCP listen on port %d: %w", l.port, err)
+		l.report.Errorf("unable to TCP listen on port %d: %w", l.port, err)
+		return err
 	}
 
 	go func() {
 		for {
 			c, err := tcp.Accept()
 			if err != nil {
-				fmt.Println("unable to accept TCP")
+				l.report.Errorf("unable to accept TCP connection on port %d: %w", l.port, err)
 				continue
 			}
 
@@ -26,7 +26,7 @@ func (l *Listener) ListenTCP() error {
 		}
 	}()
 
-	fmt.Println("Listening for TCP connections on port", l.port)
+	l.report.Infof("Listening for TCP connections on port %d", l.port)
 
 	return nil
 }

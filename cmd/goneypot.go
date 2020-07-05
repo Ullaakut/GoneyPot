@@ -42,8 +42,7 @@ func main() {
 		l := listener.New(ctx, 0, logger)
 
 		if err := l.ListenICMP(); err != nil {
-			fmt.Println("unable to listen ICMP:", err)
-			return
+			os.Exit(1)
 		}
 	}
 
@@ -51,15 +50,14 @@ func main() {
 		portRanges, err := cfg.TCP.PortRanges()
 		if err != nil {
 			fmt.Println("invalid TCP port range:", err)
-			return
+			os.Exit(1)
 		}
 
 		for _, portRange := range portRanges {
 			// Single port, not a range.
 			if portRange[1] == 0 {
 				if err := listener.New(ctx, portRange[0], logger).ListenTCP(); err != nil {
-					fmt.Println("unable to listen TCP:", err)
-					return
+					os.Exit(1)
 				}
 
 				continue
@@ -67,8 +65,7 @@ func main() {
 
 			for port := portRange[0]; port <= portRange[1]; port++ {
 				if err := listener.New(ctx, port, logger).ListenTCP(); err != nil {
-					fmt.Println("unable to listen TCP:", err)
-					return
+					os.Exit(1)
 				}
 			}
 		}
@@ -78,15 +75,14 @@ func main() {
 		portRanges, err := cfg.UDP.PortRanges()
 		if err != nil {
 			fmt.Println("invalid UDP port range:", err)
-			return
+			os.Exit(1)
 		}
 
 		for _, portRange := range portRanges {
 			// Single port, not a range.
 			if portRange[1] == 0 {
 				if err := listener.New(ctx, portRange[0], logger).ListenUDP(); err != nil {
-					fmt.Println("unable to listen UDP:", err)
-					return
+					os.Exit(1)
 				}
 
 				continue
@@ -94,8 +90,7 @@ func main() {
 
 			for port := portRange[0]; port <= portRange[1]; port++ {
 				if err := listener.New(ctx, port, logger).ListenUDP(); err != nil {
-					fmt.Println("unable to listen UDP:", err)
-					return
+					os.Exit(1)
 				}
 			}
 		}

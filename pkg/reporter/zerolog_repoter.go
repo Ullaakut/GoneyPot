@@ -5,24 +5,29 @@ import (
 	"os"
 	"time"
 
+	"fmt"
 	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 )
 
 type ZeroLogReporter struct {
-	zerolog.Logger
+	log zerolog.Logger
 }
 
 func NewZeroLog() ZeroLogReporter {
 	return ZeroLogReporter{
-		Logger: zerolog.New(os.Stdout),
+		log: zerolog.New(os.Stdout),
 	}
+}
+
+func (z ZeroLogReporter) Level(level zerolog.Level) {
+	z.log.Level(level)
 }
 
 func (z ZeroLogReporter) Event(source net.Addr, packet []byte, format string, a ...interface{}) {
 	eventID := uuid.New().String()
 
-	log := z.Info().
+	log := z.log.Info().
 		Str("id", eventID).
 		Time("time", time.Now()).
 		Int("packet_length", len(packet))
@@ -39,7 +44,15 @@ func (z ZeroLogReporter) Event(source net.Addr, packet []byte, format string, a 
 	}
 
 	// Print packet contents only in debug.
-	z.Debug().
+	z.log.Debug().
 		Str("id", eventID).
 		Hex("packet", packet).Msg("")
+}
+
+func (z ZeroLogReporter) Infof(format string, a ...interface{}) {
+	z.log.Info().Msgf(format, a)
+}
+
+func (z ZeroLogReporter) Errorf(format string, a ...interface{}) {
+	z.log.Error().Err(fmt.Errorf(format, a)).Msg("")
 }
