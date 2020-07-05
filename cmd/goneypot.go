@@ -32,7 +32,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Printf("Configuration loaded: %+v\n", cfg)
+	fmt.Println("Configuration loaded", cfg.String())
 
 	logger := reporter.NewZeroLog()
 	logger.Level(zerolog.DebugLevel)
