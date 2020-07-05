@@ -59,8 +59,10 @@ func (u *UDPConfig) UnmarshalMap(value interface{}) error {
 	}
 
 	var err error
-	t.Ports, err = NewPortRanges(portRanges)
+	u.Ports, err = NewPortRanges(portRanges)
 	if err != nil {
 		return err
 	}
+
+	return nil
 }
