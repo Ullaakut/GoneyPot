@@ -6,15 +6,16 @@ import (
 	"os"
 	"os/signal"
 
+	"github.com/rs/zerolog"
+	"github.com/spf13/viper"
 	"github.com/Ullaakut/goneypot/pkg/configuration"
 	"github.com/Ullaakut/goneypot/pkg/listener"
 	"github.com/Ullaakut/goneypot/pkg/reporter"
-	"github.com/rs/zerolog"
-	"github.com/spf13/viper"
 )
 
 func main() {
-	viper.SetConfigName("config.yaml")
+	viper.SetConfigName("config")
+	viper.SetConfigType("yaml")
 	viper.AddConfigPath("/etc/goneypot/")
 	viper.AddConfigPath("$HOME/.config/goneypot/")
 	viper.AddConfigPath(".")
