@@ -8,7 +8,9 @@ type Configuration struct {
 	ICMP bool       `yaml:"icmp"`
 	TCP  *TCPConfig `yaml:"tcp"`
 	UDP  *UDPConfig `yaml:"udp"`
+
 	// TODO: Reporting options.
+	Debug bool
 }
 
 func (c Configuration) String() string {

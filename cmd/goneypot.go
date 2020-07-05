@@ -32,10 +32,13 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Println("Configuration loaded", cfg.String())
-
 	logger := reporter.NewZeroLog()
-	logger.Level(zerolog.DebugLevel)
+	if cfg.Debug {
+		logger.Level(zerolog.DebugLevel)
+	}
+
+	logger.Infof("Configuration loaded %s", cfg.String())
+
 	ctx := context.Background()
 
 	if cfg.ICMP {
