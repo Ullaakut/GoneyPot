@@ -1,7 +1,6 @@
 package listener
 
 import (
-	"bufio"
 	"fmt"
 	"net"
 	"strconv"
@@ -23,14 +22,15 @@ func (l *Listener) ListenUDP() error {
 
 		for {
 			println("3")
-			d, err := bufio.NewReader(c).ReadBytes('\n')
+			d := make([]byte, 1024*1024)
+			_, source, err := c.ReadFromUDP(d)
 			if err != nil {
 				println("4.1")
-				l.report.Event(c.RemoteAddr(), nil, "unable to read from UDP connection on port %d", l.port)
+				l.report.Event(source, nil, "unable to read from UDP connection on port %d", l.port)
 			}
 
 			println("4.2")
-			l.report.Event(c.RemoteAddr(), d, "UDP request received")
+			l.report.Event(source, d, "UDP request received")
 		}
 	}()
 
