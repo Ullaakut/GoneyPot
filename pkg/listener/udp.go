@@ -19,7 +19,7 @@ func (l *Listener) ListenUDP() error {
 		}
 
 		for {
-			d := make([]byte, 1024*1024)
+			d := make([]byte, 16)
 			_, source, err := c.ReadFromUDP(d)
 			if err != nil {
 				l.report.Event(source, nil, "unable to read from UDP connection on port %d", l.port)
