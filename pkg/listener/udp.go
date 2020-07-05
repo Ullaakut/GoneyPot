@@ -14,17 +14,22 @@ func (l *Listener) ListenUDP() error {
 	}
 
 	go func() {
+		println("1")
 		c, err := net.ListenUDP("udp4", s)
 		if err != nil {
 			return
 		}
+		println("2")
 
 		for {
+			println("3")
 			d, err := bufio.NewReader(c).ReadBytes('\n')
 			if err != nil {
+				println("4.1")
 				l.report.Event(c.RemoteAddr(), nil, "unable to read from UDP connection on port %d", l.port)
 			}
 
+			println("4.2")
 			l.report.Event(c.RemoteAddr(), d, "UDP request received")
 		}
 	}()
