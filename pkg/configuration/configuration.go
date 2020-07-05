@@ -1,5 +1,7 @@
 package configuration
 
+import "errors"
+
 type Configuration struct {
 	ICMP bool       `yaml:"icmp"`
 	TCP  *TCPConfig `yaml:"tcp"`
@@ -8,19 +10,27 @@ type Configuration struct {
 }
 
 type TCPConfig struct {
-	Ports PortRanges `yaml:"ports"`
+	Ports PortRanges `mapstructure:"ports"`
 	// TODO: Fake service configuration.
 }
 
-// UnmarshalYAML implements the Unmarshaler interface of the yaml pkg.
-func (t *TCPConfig) UnmarshalYAML(unmarshal func(interface{}) error) error {
-	var yamlPortRangeSequence []string
-	if err := unmarshal(&yamlPortRangeSequence); err != nil {
-		return err
+// UnmarshalMap implements the Unmarshaler interface.
+func (t *TCPConfig) UnmarshalMap(value interface{}) error {
+	var (
+		tcpCfg map[string]interface{}
+		ok     bool
+	)
+	if tcpCfg, ok = value.(map[string]interface{}); !ok {
+		return errors.New("invalid TCP port range")
+	}
+
+	portRanges, ok := tcpCfg["ports"].([]string)
+	if !ok {
+		return errors.New("invalid TCP port range")
 	}
 
 	var err error
-	t.Ports, err = NewPortRanges(yamlPortRangeSequence)
+	t.Ports, err = NewPortRanges(portRanges)
 	if err != nil {
 		return err
 	}
@@ -29,22 +39,28 @@ func (t *TCPConfig) UnmarshalYAML(unmarshal func(interface{}) error) error {
 }
 
 type UDPConfig struct {
-	Ports PortRanges `yaml:"ports"`
+	Ports PortRanges `mapstructure:"ports"`
 	// TODO: Fake service configuration.
 }
 
-// UnmarshalYAML implements the Unmarshaler interface of the yaml pkg.
-func (u *UDPConfig) UnmarshalYAML(unmarshal func(interface{}) error) error {
-	var yamlPortRangeSequence []string
-	if err := unmarshal(&yamlPortRangeSequence); err != nil {
-		return err
+// UnmarshalMap implements the Unmarshaler interface.
+func (u *UDPConfig) UnmarshalMap(value interface{}) error {
+	var (
+		udpCfg map[string]interface{}
+		ok     bool
+	)
+	if udpCfg, ok = value.(map[string]interface{}); !ok {
+		return errors.New("invalid UDP port range")
+	}
+
+	portRanges, ok := udpCfg["ports"].([]string)
+	if !ok {
+		return errors.New("invalid UDP port range")
 	}
 
 	var err error
-	u.Ports, err = NewPortRanges(yamlPortRangeSequence)
+	t.Ports, err = NewPortRanges(portRanges)
 	if err != nil {
 		return err
 	}
-
-	return nil
 }
