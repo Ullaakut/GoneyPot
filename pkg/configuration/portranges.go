@@ -48,5 +48,7 @@ func NewPortRanges(s []string) (PortRanges, error) {
 		})
 	}
 
+	fmt.Printf("Result: %+v\n", result)
+
 	return result, nil
 }
