@@ -13,6 +13,10 @@ A golang CLI to setup [honey pots](https://en.wikipedia.org/wiki/Honeypot_(compu
 * File configuration
 * JSON-formatted structured logs
 
+<p align="center">
+    <img size="100%" src="img/output.png"/>
+</p>
+
 ## Example configuration
 
 ```yaml
