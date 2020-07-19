@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"fmt"
+
 	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 )
@@ -38,7 +39,7 @@ func (z ZeroLogReporter) Event(source net.Addr, packet []byte, format string, a 
 	}
 
 	if len(a) > 0 {
-		log.Msgf(format, a)
+		log.Msgf(format, a...)
 	} else {
 		log.Msg(format)
 	}
@@ -54,9 +55,9 @@ func (z ZeroLogReporter) Info(msg string) {
 }
 
 func (z ZeroLogReporter) Infof(format string, a ...interface{}) {
-	z.log.Info().Msgf(format, a)
+	z.log.Info().Msgf(format, a...)
 }
 
 func (z ZeroLogReporter) Errorf(format string, a ...interface{}) {
-	z.log.Error().Err(fmt.Errorf(format, a)).Msg("")
+	z.log.Error().Err(fmt.Errorf(format, a...)).Msg("")
 }

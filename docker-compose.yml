@@ -1,0 +1,30 @@
+version: "3"
+
+networks:
+  honeypot:
+
+services:
+  goneypot:
+    build: .
+    restart: always
+    links:
+      - logstash
+    ports:
+      - "80:80"
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://172.24.0.2:9600
+    networks:
+      - honeypot
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:6.8.10
+    restart: always
+    volumes:
+      - ./logstash:/etc/logstash
+    #command: logstash -f /etc/logstash/logstash.conf
+    ports:
+      - "9600:9600"
+    networks:
+      - honeypot
